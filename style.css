@@ -15,6 +15,11 @@ button {
     border-radius: 10px;
 }
 
+button:hover {
+    color: coral;
+    background-color: white;
+}
+
 input {
     font-family: 'Open Sans', sans-serif;
     text-align: right;
