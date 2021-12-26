@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <center>
+        <h1>#name#</h1>
+        חבר'ס שבנסיעה:<br>
+        #users#<br>
+        <br>
+        <button onclick="leaveDrive()">ביי חבר'ס אני עוזב</button>
+        </center>
+    </body>
+    <script>
+        let cars = #setup#;
+
+        function leaveDrive()
+        {
+            window.location.href = "http://" + window.location.hostname + "/leave";
+        }
+
+        // refresh every 5 secs
+        setInterval(()=>{window.location.reload()}, 5*1000);
+    </script>
+</html>

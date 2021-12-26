@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <center>
+        <h1>#name#</h1>
+        <h3>כל המזדיינים שבנסיעה:</h3>
+        <p>#users#</p>
+        <br><br>
+        <div id="linkDiv">
+            שלח קישור לחברים שייצטרפו!<br>
+            <input id="link" readonly="true" value="loading"/>
+        </div>
+        <br><br>
+        <button id="setupBtn" onclick="setup()">יאללה בואו נרביץ בסידוריישן</button><br>
+        <div id="setup" style="visibility: hidden;"></div>
+        </center>
+    </body>
+    <script>
+        let cars = #setup#;
+
+        let linkId = "#linkId#";
+        document.getElementById("link").value = "http://" + window.location.hostname + '/join/' + linkId;
+
+        if (cars.length != 0)
+        {
+            // hide setup btn
+            document.getElementById("setupBtn").style.visibility = "hidden";
+            document.getElementById("linkDiv").style.visibility = "hidden";
+            // and show the setup
+            let setupDiv = document.getElementById("setup");
+            setupDiv.innerHTML = ":הסידוריישן הוא כזה<br>";
+            for (let i = 0; i < cars.length; i++)
+            {   let car = cars[i];
+                setupDiv.innerHTML += "<h3>" + "נהגוס: " + car.driver.name + "</h3>";
+                for (let j = 0; j < car.backseat.length; j++)
+                {
+                    let backseater = car.backseat[j];
+                    if (backseater != null)
+                        setupDiv.innerHTML += backseater.name + "<br>";
+                }
+            }
+            setupDiv.style.visibility = "visible";
+        }
+
+        function setup()
+        {
+            window.location.href = 'http://' + window.location.hostname + '/setup';
+        }
+        
+        // refresh every 5 secs
+        setInterval(()=>{window.location.reload()}, 5*1000);
+    </script>
+</html>

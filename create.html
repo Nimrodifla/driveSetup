@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <center>
+            <input id="name" placeholder="שם נסיעה"/><br>
+            <input id="username" placeholder="מה השם שלך גבר"/><br>
+            <input id="driver" type="checkbox" onchange="onCheckBoxChange()"/> אני מוציא אוטו
+            <br>
+            <div id="howMuch" style="visibility: hidden;">
+                כמה אתה רוצה להוציא אוטו?<br>
+                אחושרמוטה<input id="will" type="range" min="1" max="5">אם חייבים
+            </div>
+            <br>
+            <button onclick="submit()">צור נסיעה!</button>
+        </center>
+    </body>
+    <script>
+        function submit()
+        {
+            let driveName = document.getElementById("name").value;
+            let username = document.getElementById("username").value;
+            let howMuch = 0;
+            let checkbox = document.getElementById("driver").checked;
+            
+            if (checkbox)
+            {
+                howMuch = document.getElementById("will").value;
+            }
+
+            let result = "/create/" + driveName + "/" + username + "/" + howMuch;
+            window.location.href = result;
+        }
+
+        function onCheckBoxChange()
+        {
+            let checkbox = document.getElementById("driver").checked
+            let howMuch = document.getElementById("howMuch")
+            if (checkbox)
+            {
+                howMuch.style.visibility = "visible";
+            }
+            else
+            {
+                howMuch.style.visibility = "hidden";
+            }
+        }
+    </script>
+</html>
