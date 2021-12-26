@@ -2,6 +2,7 @@
 <html>
     <body>
         <center>
+        שם הנסיעה
         <h1>#name#</h1>
         <h3>כל המזדיינים שבנסיעה:</h3>
         <p>#users#</p>
@@ -13,7 +14,7 @@
         <br><br>
         <button id="setupBtn" onclick="setup()">יאללה בואו נרביץ בסידוריישן</button><br>
         <div id="setup" style="visibility: hidden;"></div>
-        <button id="cancelBtn" onclick="cancelArn()">יא סידור זבל, לפח</button>
+        <button id="cancelBtn" onclick="cancelArn()" style="visibility: hidden;">סידור זבל, לפח</button>
         </center>
     </body>
     <script>
@@ -27,6 +28,7 @@
             // hide setup btn
             document.getElementById("setupBtn").style.visibility = "hidden";
             document.getElementById("linkDiv").style.visibility = "hidden";
+            document.getElementById("cancelBtn").style.visibility = "visible";
             // and show the setup
             let setupDiv = document.getElementById("setup");
             setupDiv.innerHTML = ":הסידוריישן הוא כזה<br>";
