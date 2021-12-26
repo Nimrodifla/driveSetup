@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
     <body>
         <center>
         שם הנסיעה
@@ -12,7 +16,8 @@
             <input id="link" readonly="true" value="loading"/>
         </div>
         <br><br>
-        <button id="setupBtn" onclick="setup()">יאללה בואו נרביץ בסידוריישן</button><br>
+        <button id="setupBtn" onclick="setup()">יאללה בואו נרביץ בסידוריישן</button><br><br>
+        <button onclick="leaveDrive()">יאללה פוצץ, אני מוחק</button><br>
         <div id="setup" style="visibility: hidden;"></div>
         <button id="cancelBtn" onclick="cancelArn()" style="visibility: hidden;">סידור זבל, לפח</button>
         </center>
@@ -43,6 +48,11 @@
                 }
             }
             setupDiv.style.visibility = "visible";
+        }
+
+        function leaveDrive()
+        {
+            window.location.href = "http://" + window.location.hostname + "/leave";
         }
 
         function setup()

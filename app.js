@@ -460,6 +460,10 @@ app.get('/cancel', (req, res)=>{
     res.sendFile(__dirname + "/main.html");
 });
 
+app.get('/style.css', (req, res)=>{
+    res.sendFile(__dirname + '/style.css');
+})
+
 function saveToDatabase()
 {
     data = JSON.stringify(DRIVES) + "\n" + JSON.stringify(LINKS);
