@@ -9,6 +9,7 @@ app.use(cookieParser());
 
 const ID_LEN = 10;
 const LINK_LEN = 6;
+const DB_PATH = "./db.txt";
 
 var DRIVES = {};
 var LINKS = {};
@@ -38,7 +39,21 @@ function htmlToString(path)
 
 function loadFromDatabase()
 {
-    //
+    if (fs.existsSync(DB_PATH))
+    {
+        let data = String(fs.readFileSync(DB_PATH));
+        if (data != undefined && data.length > 0)
+        {
+            let drivesData = data.substring(0, data.indexOf("\n"));
+            let linksData = data.substring(data.indexOf("\n")+1);
+            console.log(drivesData);
+            console.log(linksData);
+            DRIVES = JSON.parse(drivesData);
+            LINKS = JSON.parse(linksData);
+            console.log(DRIVES);
+            console.log(LINKS);
+        }
+    }
 }
 
 function makeid(length) {
@@ -180,6 +195,7 @@ app.get("/", (req, res)=>{
             }
         }
     }
+    saveToDatabase();
 });
 
 function driveCreatedPage(driveId)
@@ -414,6 +430,14 @@ app.get('/leave', (req, res)=>{
     }
     res.sendFile(__dirname + "/main.html");
 })
+
+function saveToDatabase()
+{
+    data = JSON.stringify(DRIVES) + "\n" + JSON.stringify(LINKS);
+    fs.writeFile(DB_PATH, data, (err) => { 
+        if (err) throw err; 
+    });
+}
 
 app.listen(process.env.PORT || 80, (err)=>{
     if (err)

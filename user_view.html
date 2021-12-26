@@ -6,11 +6,31 @@
         חבר'ס שבנסיעה:<br>
         #users#<br>
         <br>
-        <button onclick="leaveDrive()">ביי חבר'ס אני עוזב</button>
+        <button id="leaveBtn" onclick="leaveDrive()">ביי חבר'ס אני עוזב</button>
         </center>
     </body>
     <script>
         let cars = #setup#;
+
+        if (cars.length != 0)
+        {
+            // hide btns
+            document.getElementById("leaveBtn").style.visibility = "hidden";
+            // and show the setup
+            let setupDiv = document.getElementById("setup");
+            setupDiv.innerHTML = ":הסידוריישן הוא כזה<br>";
+            for (let i = 0; i < cars.length; i++)
+            {   let car = cars[i];
+                setupDiv.innerHTML += "<h3>" + "נהגוס: " + car.driver.name + "</h3>";
+                for (let j = 0; j < car.backseat.length; j++)
+                {
+                    let backseater = car.backseat[j];
+                    if (backseater != null)
+                        setupDiv.innerHTML += backseater.name + "<br>";
+                }
+            }
+            setupDiv.style.visibility = "visible";
+        }
 
         function leaveDrive()
         {
