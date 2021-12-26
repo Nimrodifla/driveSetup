@@ -13,6 +13,7 @@
         <br><br>
         <button id="setupBtn" onclick="setup()">יאללה בואו נרביץ בסידוריישן</button><br>
         <div id="setup" style="visibility: hidden;"></div>
+        <button id="cancelBtn" onclick="cancelArn()">יא סידור זבל, לפח</button>
         </center>
     </body>
     <script>
@@ -45,6 +46,11 @@
         function setup()
         {
             window.location.href = 'http://' + window.location.hostname + '/setup';
+        }
+
+        function cancelArn()
+        {
+            window.location.href = 'http://' + window.location.hostname + '/cancel';
         }
         
         // refresh every 5 secs

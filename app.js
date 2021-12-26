@@ -431,6 +431,35 @@ app.get('/leave', (req, res)=>{
     res.sendFile(__dirname + "/main.html");
 })
 
+app.get('/cancel', (req, res)=>{
+    let userId = req.cookies.id;
+    if (userId == undefined || !isIdInSystem(userId))
+    {
+        // user is new - make him an id
+        res.cookie("id", makeid(ID_LEN));
+    }
+    else
+    {
+        let driveId = undefined;
+        for (let key in DRIVES)
+        {
+            let val = DRIVES[key];
+            if (val.ownerId == userId)
+            {
+                driveId = key;
+                break;
+            }
+        }
+
+        if (driveId != undefined)
+        {
+            DRIVES[driveId].setuped = false;
+        }
+        res.cookie("id", userId);
+    }
+    res.sendFile(__dirname + "/main.html");
+});
+
 function saveToDatabase()
 {
     data = JSON.stringify(DRIVES) + "\n" + JSON.stringify(LINKS);
