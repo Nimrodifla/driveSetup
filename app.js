@@ -262,8 +262,19 @@ function joinPage(driveIdToJoin)
 app.get("/join/:id", (req, res)=>{
     let driveId = LINKS[req.params.id];
     let userId = req.cookies.id;
-    
-    if (userId == undefined || !isIdInSystem(userId))
+
+    if (driveId == undefined && userId == undefined)
+    {
+        // means the user doesnt have a form filled
+        res.cookie("id", makeid(ID_LEN));
+        res.sendFile(__dirname + '/main.html');
+    }
+    else if (driveId == undefined)
+    {
+        res.cookie('id', userId);
+        res.sendFile(__dirname + '/main.html');
+    }
+    else if (userId == undefined || !isIdInSystem(userId))
     {
         // means the user doesnt have a form filled
         res.cookie("id", makeid(ID_LEN));
@@ -412,17 +423,26 @@ app.get('/leave', (req, res)=>{
             let found = false;
             for (let i in DRIVES[key].users)
             {
+                if (DRIVES[key].ownerId == userId) // user is owning this drive
+                {
+                    // delete drive
+                    let link = DRIVES[key].linkId;
+                    delete DRIVES[key];
+                    delete LINKS[link];
+                    found = true;
+                    break;
+                }
+
                 if (DRIVES[key].users[i].id == userId) // user is in that drive
                 {
                     // so we'll remove him from there
                     DRIVES[key].users.splice(i, 1);
+                    found = true;
                 }
-
-                if (DRIVES[key].ownerId == userId) // user is owning this drive
-                {
-                    // delete drive
-                    delete DRIVES[key];
-                }
+            }
+            if (found)
+            {
+                break;
             }
         }
 
