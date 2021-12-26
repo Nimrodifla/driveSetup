@@ -35,8 +35,11 @@
                 howMuch = document.getElementById("will").value;
             }
 
-            let result = "/joinreq/" + username + "/" + howMuch + '/' + driveId;
-            window.location.href = result;
+            if (username.length > 0)
+            {
+                let result = "/joinreq/" + username + "/" + howMuch + '/' + driveId;
+                window.location.href = result;
+            }
         }
 
         function onCheckBoxChange()

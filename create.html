@@ -31,8 +31,11 @@
                 howMuch = document.getElementById("will").value;
             }
 
-            let result = "/create/" + driveName + "/" + username + "/" + howMuch;
-            window.location.href = result;
+            if (driveName.length > 0 && username.length > 0)
+            {
+                let result = "/create/" + driveName + "/" + username + "/" + howMuch;
+                window.location.href = result;
+            }
         }
 
         function onCheckBoxChange()
