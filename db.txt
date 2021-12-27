@@ -1,2 +1,2 @@
-{}
-{}
+{"288481":{"linkId":"zb4ymG","ownerId":"EK8ifmMbcA","driveName":"ניקי","users":[{"name":"נימי","id":"EK8ifmMbcA","howMuch":"3"}],"setuped":false}}
+{"zb4ymG":"288481"}
