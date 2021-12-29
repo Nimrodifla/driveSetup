@@ -1,2 +1,2 @@
 # we dont want to run over the database every app update :)
-#db.txt
+db.txt

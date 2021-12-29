@@ -1,13 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');*/
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-family: Sans-serif;
     text-align: right;
     margin: 0px;
 }
 
 button {
-    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-family: Sans-serif;
 
     padding: 10px;
     background-color: coral;
@@ -26,7 +28,9 @@ button:hover {
 }
 
 input {
-    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-family: Sans-serif;
+    
     text-align: right;
     width: 90%;
     font-size: large;

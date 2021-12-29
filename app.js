@@ -1,11 +1,22 @@
 const express = require("express");
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
+var mysql = require('mysql');
+/*
 const res = require("express/lib/response");
 const e = require("express");
+*/
 var app = express();
 
 app.use(cookieParser());
+
+const db = mysql.createPool({
+        
+    host: "eu-cdbr-west-02.cleardb.net",
+    user: "ba27ffeb2757ff",
+    password: "8882ff46",
+    database: "heroku_11549fe01367124"
+});
 
 const ID_LEN = 10;
 const LINK_LEN = 6;
@@ -39,6 +50,7 @@ function htmlToString(path)
 
 function loadFromDatabase()
 {
+    /*
     if (fs.existsSync(DB_PATH))
     {
         let data = String(fs.readFileSync(DB_PATH));
@@ -54,6 +66,21 @@ function loadFromDatabase()
             console.log(LINKS);
         }
     }
+    */
+    db.query("SELECT data FROM info WHERE id = 0;", (err, result)=>{
+        if (err)
+            throw err;
+        
+        let res = result[0].data;
+        DRIVES = JSON.parse(res);
+    });
+    db.query("SELECT data FROM info WHERE id = 1;", (err, result)=>{
+        if (err)
+            throw err;
+        
+        let res = result[0].data;
+        LINKS = JSON.parse(res);
+    });
 }
 
 function makeid(length) {
@@ -144,10 +171,15 @@ function userViewPage(userId)
 // create drive
 app.get("/", (req, res)=>{
     let userId = req.cookies.id;
-    if (userId == undefined || !isIdInSystem(userId))
+    if (userId == undefined)
     {
         // user is new - make him an id
         res.cookie("id", makeid(ID_LEN));
+        res.sendFile(__dirname + "/create.html");
+    }
+    else if (!isIdInSystem(userId))
+    {
+        res.cookie("id", userId);
         res.sendFile(__dirname + "/create.html");
     }
     else
@@ -277,10 +309,15 @@ app.get("/join/:id", (req, res)=>{
         res.cookie('id', userId);
         res.sendFile(__dirname + '/main.html');
     }
-    else if (userId == undefined || !isIdInSystem(userId))
+    else if (userId == undefined)
     {
         // means the user doesnt have a form filled
         res.cookie("id", makeid(ID_LEN));
+        res.send(joinPage(driveId));
+    }
+    else if (!isIdInSystem(userId))
+    {
+        res.cookie("id", userId);
         res.send(joinPage(driveId));
     }
     else
@@ -384,10 +421,14 @@ function setupDrive(driveId)
 app.get('/setup', (req, res)=>{
     let userId = req.cookies.id;
 
-    if (userId == undefined || !isIdInSystem(userId))
+    if (userId == undefined)
     {
         // user is new - make him an id
         res.cookie("id", makeid(ID_LEN));
+    }
+    else if (!isIdInSystem(userId))
+    {
+        res.cookie("id", userId);
     }
     else
     {
@@ -414,10 +455,14 @@ app.get('/setup', (req, res)=>{
 
 app.get('/leave', (req, res)=>{
     let userId = req.cookies.id;
-    if (userId == undefined || !isIdInSystem(userId))
+    if (userId == undefined)
     {
         // user is new - make him an id
         res.cookie("id", makeid(ID_LEN));
+    }
+    else if (!isIdInSystem(userId))
+    {
+        res.cookie("id", userId);
     }
     else
     {
@@ -456,10 +501,14 @@ app.get('/leave', (req, res)=>{
 
 app.get('/cancel', (req, res)=>{
     let userId = req.cookies.id;
-    if (userId == undefined || !isIdInSystem(userId))
+    if (userId == undefined)
     {
         // user is new - make him an id
         res.cookie("id", makeid(ID_LEN));
+    }
+    else if (!isIdInSystem(userId))
+    {
+        res.cookie("id", userId);
     }
     else
     {
@@ -489,9 +538,19 @@ app.get('/style.css', (req, res)=>{
 
 function saveToDatabase()
 {
+    /*
     data = JSON.stringify(DRIVES) + "\n" + JSON.stringify(LINKS);
     fs.writeFile(DB_PATH, data, (err) => { 
         if (err) throw err; 
+    });
+    */
+    db.query("UPDATE info SET data = '" + JSON.stringify(DRIVES) + "' WHERE id = 0", (err, result)=>{
+        if (err)
+            throw err;
+    });
+    db.query("UPDATE info SET data = '" + JSON.stringify(LINKS) + "' WHERE id = 1", (err, result)=>{
+        if (err)
+            throw err;
     });
 }
 
