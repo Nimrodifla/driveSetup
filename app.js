@@ -79,7 +79,10 @@ function getUsersInDrive(driveId)
     for (let i in users)
     {
         let u = users[i];
-        userList.push(u.name);
+        let res = u.name;
+        if (u.howMuch > 0)
+            res += " 🚗";
+        userList.push(res);
     }
 
     return userList;
