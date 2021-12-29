@@ -315,10 +315,10 @@ app.get("/join/:id", (req, res)=>{
         res.cookie("id", makeid(ID_LEN));
         res.send(joinPage(driveId));
     }
-    else if (!isIdInSystem(userId))
+    else if (isIdInSystem(userId))
     {
         res.cookie("id", userId);
-        res.send(joinPage(driveId));
+        res.sendFile(__dirname + '/main.html');
     }
     else
     {
