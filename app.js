@@ -50,36 +50,23 @@ function htmlToString(path)
 
 function loadFromDatabase()
 {
-    /*
-    if (fs.existsSync(DB_PATH))
-    {
-        let data = String(fs.readFileSync(DB_PATH));
-        if (data != undefined && data.length > 0)
-        {
-            let drivesData = data.substring(0, data.indexOf("\n"));
-            let linksData = data.substring(data.indexOf("\n")+1);
-            console.log(drivesData);
-            console.log(linksData);
-            DRIVES = JSON.parse(drivesData);
-            LINKS = JSON.parse(linksData);
-            console.log(DRIVES);
-            console.log(LINKS);
-        }
-    }
-    */
+
     db.query("SELECT data FROM info WHERE id = 0;", (err, result)=>{
         if (err)
             throw err;
         
         let res = result[0].data;
         DRIVES = JSON.parse(res);
-    });
-    db.query("SELECT data FROM info WHERE id = 1;", (err, result)=>{
-        if (err)
-            throw err;
-        
-        let res = result[0].data;
-        LINKS = JSON.parse(res);
+
+        db.query("SELECT data FROM info WHERE id = 1;", (err, result)=>{
+            if (err)
+                throw err;
+            
+            let res = result[0].data;
+            LINKS = JSON.parse(res);
+
+            console.log("Data Loaded!");
+        });
     });
 }
 
@@ -100,7 +87,7 @@ function ramdomInt(min, max)
 
 function getUsersInDrive(driveId)
 {
-    
+    console.log(driveId);
     let userList = []
     let users = DRIVES[driveId].users;
     for (let i in users)
@@ -160,6 +147,7 @@ function userViewPage(userId)
     let html = htmlToString(__dirname + '/user_view.html');
     html = replaceTemp(html, '#users#', userList);
     html = replaceTemp(html, '#name#', DRIVES[driveId].driveName);
+    html = replaceTemp(htlm, '#linkId#', DRIVES[driveId].linkId);
     if (DRIVES[driveId].setuped)
         html = replaceTemp(html, '#setup#', JSON.stringify(DRIVES[driveId].setup));
     else
@@ -295,7 +283,8 @@ function joinPage(driveIdToJoin)
 
 // user asks to join a drive
 app.get("/join/:id", (req, res)=>{
-    let driveId = LINKS[req.params.id];
+    let link = req.params.id;
+    let driveId = LINKS[link];
     let userId = req.cookies.id;
 
     if (driveId == undefined && userId == undefined)
@@ -312,7 +301,7 @@ app.get("/join/:id", (req, res)=>{
     else if (userId == undefined)
     {
         // means the user doesnt have a form filled
-        res.cookie("id", makeid(ID_LEN));
+        res.cookie('id', userId);
         res.send(joinPage(driveId));
     }
     else if (isIdInSystem(userId))
@@ -323,7 +312,7 @@ app.get("/join/:id", (req, res)=>{
     else
     {
         res.cookie('id', userId);
-        res.send(userViewPage(userId));
+        res.send(joinPage(driveId));
     }
 });
 
@@ -538,19 +527,17 @@ app.get('/style.css', (req, res)=>{
 
 function saveToDatabase()
 {
-    /*
-    data = JSON.stringify(DRIVES) + "\n" + JSON.stringify(LINKS);
-    fs.writeFile(DB_PATH, data, (err) => { 
-        if (err) throw err; 
-    });
-    */
+
     db.query("UPDATE info SET data = '" + JSON.stringify(DRIVES) + "' WHERE id = 0", (err, result)=>{
         if (err)
             throw err;
-    });
-    db.query("UPDATE info SET data = '" + JSON.stringify(LINKS) + "' WHERE id = 1", (err, result)=>{
-        if (err)
-            throw err;
+
+        db.query("UPDATE info SET data = '" + JSON.stringify(LINKS) + "' WHERE id = 1", (err, result)=>{
+            if (err)
+                throw err;
+
+            console.log("Data Saved!");
+        });
     });
 }
 

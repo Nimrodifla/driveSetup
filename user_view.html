@@ -10,12 +10,20 @@
         חבר'ס שבנסיעה:<br>
         #users#<br>
         <br>
+        <div id="linkDiv">
+            !שלח קישור לחברים שייצטרפו<br>
+            <input id="link" readonly="true" value="loading"/><button onclick="copy()">תעתיק לי אבא</button>
+        </div>
+        <br>
         <button id="leaveBtn" onclick="leaveDrive()">ביי חבר'ס אני עוזב</button>
         <div id="setup" style="visibility: hidden;"></div>
         </center>
     </body>
     <script>
         let cars = #setup#;
+
+        let linkId = "#linkId#";
+        document.getElementById("link").value = "http://" + window.location.hostname + '/join/' + linkId;
 
         if (cars.length != 0)
         {
