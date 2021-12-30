@@ -29,7 +29,6 @@ function createLinkForDrive(driveId)
     let link = makeid(LINK_LEN);
     LINKS[link] = driveId;
     DRIVES[driveId].linkId = link;
-    console.log(LINKS[link]);
 }
 
 function replaceTemp(html, src, dst)
@@ -86,7 +85,6 @@ function ramdomInt(min, max)
 
 function getUsersInDrive(driveId)
 {
-    console.log(driveId);
     let userList = []
     let users = DRIVES[driveId].users;
     for (let i in users)
@@ -146,7 +144,7 @@ function userViewPage(userId)
     let html = htmlToString(__dirname + '/user_view.html');
     html = replaceTemp(html, '#users#', userList);
     html = replaceTemp(html, '#name#', DRIVES[driveId].driveName);
-    html = replaceTemp(htlm, '#linkId#', DRIVES[driveId].linkId);
+    html = replaceTemp(html, '#linkId#', DRIVES[driveId].linkId);
     if (DRIVES[driveId].setuped)
         html = replaceTemp(html, '#setup#', JSON.stringify(DRIVES[driveId].setup));
     else
@@ -330,7 +328,6 @@ app.get('/joinreq/:name/:howmuch/:driveid', (req, res)=>{
     }
     else
     {
-        console.log("Added!");
         addUserToDrive(driveId, userId, username, howMuch);
         res.cookie("id", userId);
     }
