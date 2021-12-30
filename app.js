@@ -473,6 +473,7 @@ app.get('/leave', (req, res)=>{
                     // so we'll remove him from there
                     DRIVES[key].users.splice(i, 1);
                     found = true;
+                    break;
                 }
             }
             if (found)
