@@ -2,10 +2,6 @@ const express = require("express");
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
 var mysql = require('mysql');
-/*
-const res = require("express/lib/response");
-const e = require("express");
-*/
 var app = express();
 
 app.use(cookieParser());
@@ -21,6 +17,9 @@ const db = mysql.createPool({
 const ID_LEN = 10;
 const LINK_LEN = 6;
 const DB_PATH = "./db.txt";
+
+var prevDrives = '';
+var prevLinks = '';
 
 var DRIVES = {};
 var LINKS = {};
@@ -159,6 +158,7 @@ function userViewPage(userId)
 // create drive
 app.get("/", (req, res)=>{
     let userId = req.cookies.id;
+
     if (userId == undefined)
     {
         // user is new - make him an id
@@ -218,6 +218,7 @@ app.get("/", (req, res)=>{
             }
         }
     }
+
     saveToDatabase();
 });
 
@@ -527,18 +528,27 @@ app.get('/style.css', (req, res)=>{
 
 function saveToDatabase()
 {
-
-    db.query("UPDATE info SET data = '" + JSON.stringify(DRIVES) + "' WHERE id = 0", (err, result)=>{
-        if (err)
-            throw err;
-
-        db.query("UPDATE info SET data = '" + JSON.stringify(LINKS) + "' WHERE id = 1", (err, result)=>{
+    let drivesData = JSON.stringify(DRIVES);
+    if (drivesData != prevDrives)
+    {
+        db.query("UPDATE info SET data = '" + drivesData + "' WHERE id = 0", (err, result)=>{
             if (err)
                 throw err;
-
-            console.log("Data Saved!");
+            
+            prevDrives = drivesData;
+            let linksData = JSON.stringify(LINKS);
+            if (linksData != prevLinks)
+            {
+                db.query("UPDATE info SET data = '" + linksData + "' WHERE id = 1", (err, result)=>{
+                    if (err)
+                        throw err;
+        
+                    console.log("Data Saved!");
+                });
+            }
+            prevLinks = linksData;
         });
-    });
+    }
 }
 
 app.listen(process.env.PORT || 80, (err)=>{
