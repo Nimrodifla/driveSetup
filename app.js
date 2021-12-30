@@ -300,7 +300,7 @@ app.get("/join/:id", (req, res)=>{
     else if (userId == undefined)
     {
         // means the user doesnt have a form filled
-        res.cookie('id', userId);
+        res.cookie('id', makeid(ID_LEN));
         res.send(joinPage(driveId));
     }
     else if (isIdInSystem(userId))
