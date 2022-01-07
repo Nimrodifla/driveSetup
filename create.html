@@ -17,7 +17,8 @@
                 אחושרמוטה<input id="will" type="range" min="1" max="5">אם חייבים
             </div>
             <br>
-            <button onclick="submit()">צור נסיעה</button>
+            <button onclick="submit()">צור נסיעה</button><br><br>
+            <input id='cookie' placeholder="שכחנו אותך? שים את הקוד פה"><button onclick="setCookie()">יאללה תעדכן</button><br>
         </center>
     </body>
     <script>
@@ -51,6 +52,16 @@
             else
             {
                 howMuch.style.visibility = "hidden";
+            }
+        }
+
+        function setCookie()
+        {
+            let cookie = document.getElementById('cookie').value;
+            if (cookie.length > 0)
+            {
+                document.cookie = 'id=' + cookie;
+                window.location.reload();
             }
         }
     </script>

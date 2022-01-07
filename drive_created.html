@@ -19,7 +19,8 @@
         <button id="setupBtn" onclick="setup()">יאללה בואו נרביץ בסידוריישן</button><br><br>
         <div id="setup" style="visibility: hidden;"></div>
         <button id="cancelBtn" onclick="cancelArn()" style="visibility: hidden;">סידור זבל, לפח</button><br>
-        <button onclick="leaveDrive()">יאללה פוצץ, אני מוחק תנסיעה</button><br>
+        <button onclick="leaveDrive()">יאללה פוצץ, אני מוחק תנסיעה</button><br><br>
+        <button onclick="showId()">?אחשלי גיבור מה הקוד שלי</button>
         </center>
     </body>
     <script>
@@ -71,6 +72,38 @@
         {
             window.location.href = 'http://' + window.location.hostname + '/cancel';
         }
+
+        function copyToClipboard(text) {
+            const elem = document.createElement('textarea');
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand('copy');
+            document.body.removeChild(elem);
+        }
+
+        function showId()
+        {
+            let cook = document.cookie.substring(document.cookie.indexOf('id=') + 3);
+            let toCopy = confirm("הקוד שלך גבר:\n" + cook + "\nלהעתיק לך מאמי?");
+            if (toCopy)
+            {
+                // copy cook to clipboard
+                copyToClipboard(cook)
+            }
+        }
+
+        /*
+        function setCookie()
+        {
+            let cookie = document.getElementById('cookie').value;
+            if (cookie.length > 0)
+            {
+                document.cookie = 'id=' + cookie;
+                window.location.reload();
+            }
+        }
+        */
         
         // refresh every 5 secs
         setInterval(()=>{window.location.reload()}, 5*1000);
