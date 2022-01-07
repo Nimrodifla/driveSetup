@@ -153,6 +153,10 @@ function userViewPage(userId)
     return html;
 }
 
+app.get('/favicon.ico', (req, res)=>{
+    res.sendFile(__dirname + '/favicon.ico');
+});
+
 // create drive
 app.get("/", (req, res)=>{
     let userId = req.cookies.id;
